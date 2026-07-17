@@ -28,6 +28,13 @@ class Data:
             "unit": Unit.PIECES,
             "is_active": True,
         },
+        4: {
+            "name": "KrackJack",
+            "price": 10,
+            "quantity": 1000,
+            "unit": Unit.PIECES,
+            "is_active": True
+        }
     }
 
     promotions = {

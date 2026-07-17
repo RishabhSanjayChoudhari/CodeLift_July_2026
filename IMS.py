@@ -1,4 +1,7 @@
-from Data import Data 
-from Data import Unit 
+from Data import Data
 class App:
-    pass
+    def printMenu():
+        print('Enter ItemId : ')
+        for k,v in Data.items.items():
+            print(k,v["name"],v["price"])
+    printMenu()
