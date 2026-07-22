@@ -4,15 +4,14 @@ class App:
         print('Enter ItemId : ')
         for k,v in Data.items.items():
             print(k,v["name"],v["price"])
-    printMenu()        
-    def printRecipt():
-        print('Enter Order id')
-        order_id = str(input())
-        for k,v in Data.orders.items():
-            if k == order_id:
-                print('ProductId','Quantity   X'   ,'Price')
-
-                for i in v['cart']:
-                    print(i['product_id'],i['quantity'],'X',i['price'])
-                    print(' Total Price :',sum(i['price'] for i in v['cart']))
-    printRecipt()                
+    printMenu()      
+    print("===========Inventory Management System============")  
+    def printOrderRecipt(orderId):
+        order=Data.orders[str(orderId)]
+        itemList=order["cart"]
+        for item in itemList:
+            productName=Data.items[item["product_id"]]["name"]
+            itemTotal=item["price"]*item["quantity"]
+            print(productName,'$',item["price"],'x',item['quantity'],'=','$',itemTotal)
+    printOrderRecipt(102)
+    
