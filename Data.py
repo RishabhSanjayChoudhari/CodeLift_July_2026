@@ -9,22 +9,22 @@ class Data:
     items = {
         1: {
             "name": "milk",
-            "price": 100,
-            "quantity": 50,
+            "price": 50,
+            "quantity": 500,
             "unit": Unit.LTR,
             "is_active": True,
         },
         2: {
             "name": "sugar",
-            "price": 50,
+            "price": 100,
             "quantity": 100,
             "unit": Unit.KG,
             "is_active": True,
         },
         3: {
             "name": "Parle-G",
-            "price": 5,
-            "quantity": 1000,
+            "price": 10,
+            "quantity": 100,
             "unit": Unit.PIECES,
             "is_active": True,
         },
@@ -41,32 +41,34 @@ class Data:
         "SUPER10": {
             "discount_type": "percent_off",
             "minimum_purchase": 500,
-            "maximum_purchase": 1000,
-            "discount_value": 20,
+            "maximum_purchase": 100000,
+            "discount_value": 200,
             "is_active": True,
         },
         "10SUPER": {
             "discount_type": "amount_off",
             "minimum_purchase": 1000,
-            "maximum_purchase": 2000,
-            "discount_value": 100,
+            "maximum_purchase": 20000000,
+            "discount_value": 500,
             "is_active": True,
         },
     }
 
     orders = {
-        101: {
+        "101": {
             "cart": [
-                {"product_id": 1, "quantity": 20, "price": 200},
+                {"product_id": 1, "quantity": 5, "price": 50},
                 {"product_id": 2, "quantity": 10, "price": 100},
-                {"product_id": 3, "quantity": 200, "price": 1000},
-            ]
+                {"product_id": 3, "quantity": 200, "price": 10},
+            ],
+            "promotions": "10SUPER"
         },
-        102: {
+        "102": {
             "cart": [
-                {"product_id": 1, "quantity": 20, "price": 200},
+                {"product_id": 1, "quantity": 20, "price": 50},
                 {"product_id": 2, "quantity": 10, "price": 100},
-                {"product_id": 3, "quantity": 200, "price": 1000},
-            ]
+                {"product_id": 4, "quantity": 150, "price": 10},
+            ],
+            "promotions": "SUPER10"
         }
     }
