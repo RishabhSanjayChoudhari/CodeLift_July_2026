@@ -3,10 +3,11 @@ class App:
     def printMenu():
         print('Enter ItemId : ')
         for k,v in Data.items.items():
-            print(k,v["name"],v["price"])
+            if v["quantity"]> 0 :
+                print(k,v["name"],"- ₹",v["price"], v["quantity"])
     
     
-    def printOrder():
+    def printOrderBill():
         orderId = input('Enter your orderId: ')
         print("")
         print("=" * 50)
@@ -39,9 +40,50 @@ class App:
 
         print("=" * 50)
 
-    
     printMenu()
+    printOrderBill()
     
-    printOrder()
+    
+    
+    
+    
+def printOrders():
+    cart = []
 
-# try 5
+    while True:
+        App.printMenu()
+
+        itemId = int(input("Enter Product ID: "))
+
+        if itemId not in Data.items:
+            print("Please enter a correct ID.")
+            continue
+
+        order_quantity = int(input("Enter Quantity: "))
+
+        name = Data.items[itemId]["name"]
+        
+        if Data.items[itemId]["quantity"] < order_quantity:
+             print(f"Only {Data.items[itemId]['quantity']} items available.")
+             
+        # quantityleft = Data.items[itemId]['quantity']
+        Data.items[itemId]["quantity"] -= order_quantity
+        
+        if order_quantity<=Data.items[itemId]['quantity'] :
+            cart.append({
+                        "name": name,
+                        "itemId": itemId,
+                        "quantity": order_quantity
+                    })
+            
+
+
+        choice = input("Do you want to add anything else (y/n): ").lower()
+
+        if choice != "y":
+            break
+
+    print(cart)
+
+printOrders()
+
