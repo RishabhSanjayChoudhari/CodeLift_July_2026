@@ -12,12 +12,12 @@ class Data:
             "price": 100,
             "quantity": 50,
             "unit": Unit.LTR,
-            "is_active": True,
+            "is_active": False,
         },
         2: {
             "name": "sugar",
             "price": 50,
-            "quantity": 100,
+            "quantity": 0,
             "unit": Unit.KG,
             "is_active": True,
         },
@@ -60,13 +60,14 @@ class Data:
                 {"product_id": 1, "quantity": 20, "price": 200},
                 {"product_id": 2, "quantity": 10, "price": 100},
                 {"product_id": 3, "quantity": 200, "price": 1000},
-            ]
+                ],
+            "promo_code": "SUPER10",
         },
         "102": {
             "cart": [
                 {"product_id": 1, "quantity": 20, "price": 200},
                 {"product_id": 2, "quantity": 10, "price": 100},
                 {"product_id": 3, "quantity": 200, "price": 1000},
-            ]
+            ],
         }
     }
