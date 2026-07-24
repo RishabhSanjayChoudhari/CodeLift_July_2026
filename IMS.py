@@ -3,7 +3,7 @@ class App:
     def printMenu():
         print('Enter ItemId : ')
         for k,v in Data.items.items():
-            if v["quantity"]> 0 :
+            if v["quantity"]> 0 and v["is_active"] :
                 print(k,v["name"],"- ₹",v["price"], v["quantity"])
     
     
@@ -86,4 +86,4 @@ def printOrders():
     print(cart)
 
 printOrders()
-
+#hello
