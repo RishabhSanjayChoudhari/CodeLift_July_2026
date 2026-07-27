@@ -6,11 +6,11 @@ class App:
             if v["is_active"]==True and v["quantity"]>=1:
                 print(k,v["name"],v["price"])
             
-    # printMenu() 
-         
-    print("===========Inventory Management System============")  
+    printMenu() 
+    print("-"*50)                                    
+    print("***********Inventory Management System***********")  
     def printOrderRecipt(orderId):
-        print("-"*50)
+        print("="*50)
         order=Data.orders[str(orderId)] 
         itemList=order["cart"]
         promo=order["promo_code"]
@@ -18,17 +18,43 @@ class App:
             
         for item in itemList:
                 productName=Data.items[item["product_id"]]["name"]
-                itemTotal=item["price"]*item["quantity"]
+                itemTotal=item["price"]*item["quantity"]*0.5
                 print(productName,'$',item["price"],'x',item['quantity'],'=','$',itemTotal)
+        print("-"*50)        
+        
+        print("TAX")
+        gst=itemTotal*0.18
+        Ammount_with_gst=itemTotal+gst
+        
+        print("Subtotal :",itemTotal)
+        print("GST :(18%)",gst)
+        print("Amount with GST:",Ammount_with_gst)
+        print("-"*50)
+       
+        
         print(promo,'Applied')
-        Discount=itemTotal*0.2
-        FinalAmmount=itemTotal-Discount
+        Discount=Ammount_with_gst*0.2
+        Ammount_after_discount=Ammount_with_gst-Discount
         print("Discount=",Discount)
-        print("FinalAmount=",FinalAmmount)
+        print("FinalAmount=",Ammount_after_discount)
             
           
     printOrderRecipt(101)
     print("-"*50)
-    
-    
-    
+   #take order item id quanitity
+    def order():
+     cart =[]
+    while True:
+     product_id=input("Enter Product Id")
+     quantity=input("Enter quantity")
+     price=Data.items[product_id]["price"]
+     cart.append({
+         "product_Id:"product_id,
+         "price :",price,
+         "Quantity :",int(quantity)})
+     choice=input("Add Another item?(yes/no):")
+     if choice.lower()=="no":
+        break
+     Data.orders["202"]={
+        "cart"
+    }
