@@ -40,12 +40,8 @@ class App:
 
         print("=" * 50)
 
-    printMenu()
-    printOrderBill()
-    
-    
-    
-    
+    # printMenu()
+    # printOrderBill()   
     
 def printOrders():
     cart = []
@@ -69,15 +65,20 @@ def printOrders():
         # quantityleft = Data.items[itemId]['quantity']
         Data.items[itemId]["quantity"] -= order_quantity
         
-        if order_quantity<=Data.items[itemId]['quantity'] :
-            cart.append({
-                        "name": name,
-                        "itemId": itemId,
-                        "quantity": order_quantity
-                    })
-            
-
-
+        contained = False
+        
+        if order_quantity<=Data.items[itemId]['quantity']:
+            for product in cart:
+                if product['itemId'] == itemId:
+                    product['quantity'] += order_quantity
+                    contained = True
+            if not contained:
+                cart.append({
+                    "name" : name,
+                    "itemId" :itemId,
+                    "quantity" : order_quantity,
+                })
+           
         choice = input("Do you want to add anything else (y/n): ").lower()
 
         if choice != "y":
@@ -86,4 +87,4 @@ def printOrders():
     print(cart)
 
 printOrders()
-#hello
+
