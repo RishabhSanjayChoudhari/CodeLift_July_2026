@@ -7,8 +7,7 @@ class App:
                 print(k,v["name"],"- ₹",v["price"], v["quantity"])
     
     
-    def printOrderBill():
-        orderId = input('Enter your orderId: ')
+    def printOrderBill(orderId):
         print("")
         print("=" * 50)
         print('OrderId: ' , orderId)
@@ -22,20 +21,18 @@ class App:
             fulltotal +=total
         print("-" * 50)
         print("Subtotal : ₹", fulltotal)
-
-        code = Data.orders[orderId]["promotions"]
-
-        if code in Data.promotions:
+        
+        code = Data.orders[orderId].get("promotions",None)
+        if code != None:
             discount = Data.promotions[code]["discount_value"]
-
             fulltotal = fulltotal - discount
-
             print("Coupon Applied :", code)
             print("Discount       : ₹", discount)
-            print("-" * 50)
-            print("Total After Discount : ₹", fulltotal)
-            print("+GST                 : 18% ")
-            print('Total After Taxes    :', (fulltotal*0.18)+fulltotal)
+            
+        print("-" * 50)
+        print("Total After Discount : ₹", fulltotal)
+        print("+GST                 : 18% ")
+        print('Total After Taxes    :', (fulltotal*0.18)+fulltotal)
             
 
         print("=" * 50)
@@ -60,40 +57,45 @@ def printOrders():
         name = Data.items[itemId]["name"]
         
         if Data.items[itemId]["quantity"] < order_quantity:
-             print(f"Only {Data.items[itemId]['quantity']} items available.")
-             
-        # quantityleft = Data.items[itemId]['quantity']
-        Data.items[itemId]["quantity"] -= order_quantity
+            print(f"Only {Data.items[itemId]['quantity']} items available.")
+        else:     
+            # quantityleft = Data.items[itemId]['quantity']
+            Data.items[itemId]["quantity"] -= order_quantity
         
-        contained = False
-        productprice = Data.items[itemId]['price']
-        
-        if order_quantity<=Data.items[itemId]['quantity']:
-            for product in cart:
-                if product['itemId'] == itemId:
-                    product['quantity'] += order_quantity
-                    contained = True
-            if not contained:
-                cart.append({
-                    "name" : name,
-                    "product_id" :itemId,
-                    "quantity" : order_quantity,
-                    "price" :  productprice
-                })
+            contained = False
+            productprice = Data.items[itemId]['price']
+            
+            if order_quantity<=Data.items[itemId]['quantity']:
+                for product in cart:
+                    if product['itemId'] == itemId:
+                        product['quantity'] += order_quantity
+                        contained = True
+                if not contained:
+                    cart.append({
+                        "name" : name,
+                        "product_id" :itemId,
+                        "quantity" : order_quantity,
+                        "price" :  productprice
+                    })
         
            
         choice = input("Do you want to add anything else (y/n): ").lower()
-        promotions = '10SUPER'
+        promoChoice = input("Do you want to add PROMO (y/n): ").lower()
         if choice != "y":
             Data.orders['103'] = {
-                "cart": cart,
-                "promotions": promotions
+                "cart": cart
             }
-            break
+        if(promoChoice=='y'):
+            promotions = '10SUPER'
+            Data.orders['103'] = {
+                "cart": cart,
+                'promotions': promotions
+                        }
+        break
 
 
     
 
 printOrders()
 # print(Data.orders)
-App.printOrderBill()
+App.printOrderBill('103')
