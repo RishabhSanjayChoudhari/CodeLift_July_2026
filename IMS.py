@@ -18,7 +18,7 @@ class App:
             qnt = item['quantity']
             amount =  item['price']
             total = item['quantity']  * item['price']
-            print(amount,'x', qnt,'=', total)
+            print(item["name"], "-",amount,'x', qnt,'=', total)
             fulltotal +=total
         print("-" * 50)
         print("Subtotal : ₹", fulltotal)
@@ -66,6 +66,7 @@ def printOrders():
         Data.items[itemId]["quantity"] -= order_quantity
         
         contained = False
+        productprice = Data.items[itemId]['price']
         
         if order_quantity<=Data.items[itemId]['quantity']:
             for product in cart:
@@ -75,16 +76,24 @@ def printOrders():
             if not contained:
                 cart.append({
                     "name" : name,
-                    "itemId" :itemId,
+                    "product_id" :itemId,
                     "quantity" : order_quantity,
+                    "price" :  productprice
                 })
+        
            
         choice = input("Do you want to add anything else (y/n): ").lower()
-
+        promotions = '10SUPER'
         if choice != "y":
+            Data.orders['103'] = {
+                "cart": cart,
+                "promotions": promotions
+            }
             break
 
-    print(cart)
+
+    
 
 printOrders()
-
+# print(Data.orders)
+App.printOrderBill()
