@@ -40,77 +40,95 @@ class App:
     # printMenu()
     # printOrderBill()   
     
-def printOrders():
-    cart = []
+    def takeOrder(self):
+        cart = []
 
-    while True:
-        App.printMenu()
+        while True:
+            App.printMenu()
 
-        itemId = int(input("Enter Product ID: "))
+            itemId = int(input("Enter Product ID: "))
 
-        if itemId not in Data.items:
-            print("Please enter a correct ID.")
-            continue
+            if itemId not in Data.items:
+                print("Please enter a correct ID.")
+                continue
 
-        order_quantity = int(input("Enter Quantity: "))
+            order_quantity = int(input("Enter Quantity: "))
+            name = Data.items[itemId]["name"]
 
-        name = Data.items[itemId]["name"]
-        
-        if Data.items[itemId]["quantity"] < order_quantity:
-            print(f"Only {Data.items[itemId]['quantity']} items available.")
-        else:     
-            # quantityleft = Data.items[itemId]['quantity']
-            Data.items[itemId]["quantity"] -= order_quantity
-        
-            contained = False
-            productprice = Data.items[itemId]['price']
-            
-            if order_quantity<=Data.items[itemId]['quantity']:
+            if Data.items[itemId]["quantity"] < order_quantity:
+                print(f"Only {Data.items[itemId]['quantity']} items available.")
+            else:
+                quantityAvailable = False
+                productprice = Data.items[itemId]["price"]
+
+                Data.items[itemId]["quantity"] -= order_quantity
+
                 for product in cart:
-                    if product['itemId'] == itemId:
-                        product['quantity'] += order_quantity
-                        contained = True
-                if not contained:
+                    if product["product_id"] == itemId:
+                        product["quantity"] += order_quantity
+                        quantityAvailable = True
+                        break
+
+                if not quantityAvailable:
                     cart.append({
-                        "name" : name,
-                        "product_id" :itemId,
-                        "quantity" : order_quantity,
-                        "price" :  productprice
+                        "product_id": itemId,
+                        "quantity": order_quantity,
+                        "price": productprice
                     })
-        
-           
-        orderTemplate = {"cart":cart,"promotions":None}
-        
-        choice = input("Do you want to add anything else (y/n): ").lower()
+
+    choice = input("Do you want to add anything else (y/n): ").lower()
+
+    if choice == "n":
         promoChoice = input("Do you want to add PROMO (y/n): ").lower()
-        
-        if(promoChoice=='y'):
-            promotioncode= input("Enter your promocode: ")
-            if(promoValidation()):
-                orderTemplate["promotions"] = promotioncode
-        break
+        orderID = max(Data.orders) + 1
 
-def applycoupon():
-    pass
+        if promoChoice == "y":
+            promoCode = self.applycoupon(cart)
 
-def promoValidation(cart, promotions):
-    fulltotal = 0
-    promoValidation = False
-    for item in cart:
-        qnt = item['quantity']
-        amount =  item['price']
-        total = item['quantity']  * item['price']
-        # print(item["name"], "-",amount,'x', qnt,'=', total)
-        fulltotal +=total
-    if promotions in Data.promotions:
-        if Data.promotions[promotions]['minimum_purchase'] > fulltotal:
-            promoValidation = True
-    return promoValidation
+            if promoCode:
+                Data.orders[orderID] = {
+                    "cart": cart,
+                    "promotions": promoCode
+                }
+            else:
+                Data.orders[orderID] = {
+                    "cart": cart
+                }
+        else:
+            Data.orders[orderID] = {
+                "cart": cart
+            }
+        return orderID
             
-        
-        
-    
+    def applycoupon(self, cart):
+        promoCode = input("Enter Promo Code: ")
 
-printOrders()
-# print(Data.orders)
-App.printOrderBill('103')
+        if self.promoValidation(cart, promoCode):
+            print("Coupon Applied Successfully")
+            return promoCode
+
+        return None
+
+    def promoValidation(self, cart, promotions):
+        fulltotal = 0
+        promoValidation = False
+        for item in cart:
+            total = item['quantity'] * item['price']
+            fulltotal += total
+        if promotions in Data.promotions:
+            if Data.promotions[promotions]['minimum_purchase'] <= fulltotal:
+                promoValidation = True
+        return promoValidation
+                
+                
+    def start(self):
+        while(True):
+            orderId = self.takeOrder()
+            self.printOrderBill(orderId)
+            
+    def main():
+        app = App()
+        app.start()
+
+    if __name__ == "__main__":
+        main()
