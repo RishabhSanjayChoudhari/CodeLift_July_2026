@@ -39,13 +39,13 @@ class Data:
 
     promotions = {
         "SUPER10": {
-            "discount_type": "percent_off",
+            "discount_type": "percent",
             "minimum_purchase": 500,
             "discount_value": 200,
             "is_active": True,
         },
         "10SUPER": {
-            "discount_type": "amount_off",
+            "discount_type": "amount",
             "minimum_purchase": 1000,
             "discount_value": 500,
             "is_active": True,
