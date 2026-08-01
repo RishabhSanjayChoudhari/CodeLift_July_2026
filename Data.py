@@ -53,7 +53,7 @@ class Data:
     }
 
     orders = {
-        "101": {
+        101: {
             "cart": [
                 {"product_id": 1, "quantity": 5, "price": 50},
                 {"product_id": 2, "quantity": 10, "price": 100},
@@ -61,7 +61,7 @@ class Data:
             ],
             "promotions": "10SUPER"
         },
-        "102": {
+        102: {
             "cart": [
                 {"product_id": 1, "quantity": 20, "price": 50},
                 {"product_id": 2, "quantity": 10, "price": 100},
