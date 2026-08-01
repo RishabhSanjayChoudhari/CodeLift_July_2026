@@ -41,14 +41,12 @@ class Data:
         "SUPER10": {
             "discount_type": "percent_off",
             "minimum_purchase": 500,
-            "maximum_purchase": 100000,
             "discount_value": 200,
             "is_active": True,
         },
         "10SUPER": {
             "discount_type": "amount_off",
             "minimum_purchase": 1000,
-            "maximum_purchase": 20000000,
             "discount_value": 500,
             "is_active": True,
         },

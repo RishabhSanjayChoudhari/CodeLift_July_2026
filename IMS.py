@@ -23,7 +23,7 @@ class App:
         print("Subtotal : ₹", fulltotal)
         
         code = Data.orders[orderId].get("promotions",None)
-        if code != None:
+        if code != None :
             discount = Data.promotions[code]["discount_value"]
             fulltotal = fulltotal - discount
             print("Coupon Applied :", code)
@@ -79,21 +79,36 @@ def printOrders():
                     })
         
            
+        orderTemplate = {"cart":cart,"promotions":None}
+        
         choice = input("Do you want to add anything else (y/n): ").lower()
         promoChoice = input("Do you want to add PROMO (y/n): ").lower()
-        if choice != "y":
-            Data.orders['103'] = {
-                "cart": cart
-            }
+        
         if(promoChoice=='y'):
-            promotions = '10SUPER'
-            Data.orders['103'] = {
-                "cart": cart,
-                'promotions': promotions
-                        }
+            promotioncode= input("Enter your promocode: ")
+            if(promoValidation()):
+                orderTemplate["promotions"] = promotioncode
         break
 
+def applycoupon():
+    pass
 
+def promoValidation(cart, promotions):
+    fulltotal = 0
+    promoValidation = False
+    for item in cart:
+        qnt = item['quantity']
+        amount =  item['price']
+        total = item['quantity']  * item['price']
+        # print(item["name"], "-",amount,'x', qnt,'=', total)
+        fulltotal +=total
+    if promotions in Data.promotions:
+        if Data.promotions[promotions]['minimum_purchase'] > fulltotal:
+            promoValidation = True
+    return promoValidation
+            
+        
+        
     
 
 printOrders()
