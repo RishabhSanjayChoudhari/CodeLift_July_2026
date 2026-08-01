@@ -4,7 +4,7 @@ class App:
         print('Enter ItemId : ')
         for k,v in Data.items.items():
             if v["quantity"]> 0 and v["is_active"] :
-                print(k,v["name"],"- ₹",v["price"], v["quantity"])
+                print(k,v["name"],"- ₹",v["price"], "| Stock:", v["quantity"])
     
     def discountAmount(self,discount,fullTotal):
         discountValue = 0
@@ -77,6 +77,7 @@ class App:
                         if product['product_id'] == itemId:
                             product['quantity'] += order_quantity
                             quantityAvailable = True
+                            break
                     if not quantityAvailable:
                         cart.append({"product_id" :itemId,"quantity" : order_quantity,"price" :  productprice})
             
@@ -86,8 +87,11 @@ class App:
                 promoChoice = input("Do you want to add PROMO (y/n): ").lower()
                 orderID = max(Data.orders)+1
                 if(promoChoice=='y'):
-                    promotions = 'SUPER10'
-                    Data.orders[orderID] = {"cart": cart,'promotions': promotions}
+                    promocode = self.applycoupon(cart)
+                    if promocode:
+                        Data.orders[orderID] = { "cart" : cart, "promotions" : promocode}
+                    else:
+                        Data.orders[orderID] = { "cart" : cart}
                 else:
                     Data.orders[orderID] = {"cart": cart}
                 return orderID

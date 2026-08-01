@@ -34,20 +34,71 @@ class Data:
             "quantity": 1000,
             "unit": Unit.PIECES,
             "is_active": True
-        }
+        },
+
+        5: {
+            "name": "salt",
+            "price": 20,
+            "quantity": 100,
+            "unit": Unit.KG,
+            "is_active": True,
+        },
+
+        6: {
+            "name": "cooking oil",
+            "price": 150,
+            "quantity": 100,
+            "unit": Unit.LTR,
+            "is_active": True,
+        },
+
+        7: {
+            "name": "tea powder",
+            "price": 250,
+            "quantity": 80,
+            "unit": Unit.KG,
+            "is_active": True,
+        },
+
+        8: {
+            "name": "coffee",
+            "price": 450,
+            "quantity": 50,
+            "unit": Unit.KG,
+            "is_active": True,
+        },
+
+        9: {
+            "name": "Oats",
+            "price": 180,
+            "quantity": 75,
+            "unit": Unit.KG,
+            "is_active": True,
+        },
+
+        10: {
+            "name": "Coca-Cola",
+            "price": 75,
+            "quantity": 100,
+            "unit": Unit.LTR,
+            "is_active": True,
+        },
+
     }
 
     promotions = {
         "SUPER10": {
-            "discount_type": "percent",
+            "type": "percent",
             "minimum_purchase": 500,
-            "discount_value": 200,
+            "maximum_purchase": 1000,
+            "discount_value": 20,
             "is_active": True,
         },
         "10SUPER": {
-            "discount_type": "amount",
-            "minimum_purchase": 1000,
-            "discount_value": 500,
+            "type": "amount",
+            "minimum_purchase":500,
+            "maximum_purchase":1000,
+            "discount_value": 200,
             "is_active": True,
         },
     }
