@@ -59,12 +59,19 @@ class App:
         cart = []
         while (True):
             self.printMenu()
-            itemId = int(input("Enter Product ID: "))
+            try:
+                itemId = int(input("Enter Product ID: "))
+            except ValueError:
+                print("You entered wrong product ID please enter a number.")
+                continue
             if itemId not in Data.items:
                 print("Please enter a correct ID.")
                 continue
-
-            order_quantity = int(input("Enter Quantity: "))
+            try:
+                order_quantity = int(input("Enter Quantity: "))
+            except ValueError:
+                print("Please enter correct quentity in numbers.")
+                continue
             name = Data.items[itemId]["name"]
             if Data.items[itemId]["quantity"] < order_quantity:
                 print(f"Only {Data.items[itemId]['quantity']} items available.")
@@ -81,23 +88,39 @@ class App:
                     if not quantityAvailable:
                         cart.append({"product_id" :itemId,"quantity" : order_quantity,"price" :  productprice})
             
-            choice = input("Do you want to add anything else (y/n): ").lower()
+            # choice = input("Do you want to add anything else (y/n): ").lower()
             
-            if choice == "n":
-                promoChoice = input("Do you want to add PROMO (y/n): ").lower()
-                orderID = max(Data.orders)+1
-                if(promoChoice=='y'):
-                    promocode = self.applycoupon(cart)
-                    if promocode:
-                        Data.orders[orderID] = { "cart" : cart, "promotions" : promocode}
-                    else:
-                        Data.orders[orderID] = { "cart" : cart}
+            while True:
+                choice = input("Do you want anything else? (y/n): ").lower()
+                if (choice == 'y'):
+                    break
+                
+                elif choice == "n":
+                    
+                    orderID = max(Data.orders)+1
+                    while(True):
+                        promoChoice = input("Do you want to add PROMO (y/n): ").lower()
+                        if(promoChoice=='y'):
+                            promocode = self.applycoupon(cart)
+                            if promocode:
+                                Data.orders[orderID] = { "cart" : cart, "promotions" : promocode}
+                            else:
+                                Data.orders[orderID] = { "cart" : cart}
+                                break
+                        elif (promoChoice == 'n'):
+                            Data.orders[orderID] = {"cart": cart}
+                            break
+                        else:
+                            print('incorrect input.')
+                            
+                    return orderID
+                
                 else:
-                    Data.orders[orderID] = {"cart": cart}
-                return orderID
+                    print("Please enter only 'y' or 'n'.")
+                
             
     def applycoupon(self, cart):
-        promoCode = input("Enter Promo Code: ")
+        promoCode = input("Enter Promo Code: ").upper()
 
         if self.promoValidation(cart, promoCode):
             print("Coupon Applied Successfully")

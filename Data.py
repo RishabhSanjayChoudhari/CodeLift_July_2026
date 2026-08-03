@@ -38,7 +38,7 @@ class Data:
 
         5: {
             "name": "salt",
-            "price": 20,
+            "price": 25,
             "quantity": 100,
             "unit": Unit.KG,
             "is_active": True,
@@ -71,14 +71,14 @@ class Data:
         9: {
             "name": "Oats",
             "price": 180,
-            "quantity": 75,
+            "quantity": 100,
             "unit": Unit.KG,
             "is_active": True,
         },
 
         10: {
             "name": "Coca-Cola",
-            "price": 75,
+            "price": 35,
             "quantity": 100,
             "unit": Unit.LTR,
             "is_active": True,
