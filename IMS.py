@@ -33,17 +33,14 @@ class App:
         print('OrderId: ', orderId)
         print("-" * 50)
         fulltotal = 0
-        item_no=1
+        
         for item in Data.orders[orderId]["cart"]:
             qnt = item['quantity']
             amount = item['price']
             name = Data.items[item['product_id']]["name"]
-            for _ in range(qnt):
-                print(f"{item_no}  {name} -₹{amount}")
-                fulltotal+=amount
-                item_no+=1
-            
-        
+            total=amount*qnt
+            print(f"{name} ₹{amount} x {qnt} = ₹{total}")
+            fulltotal+=total 
         print("-" * 50)
         print("Subtotal : ₹", fulltotal)
 
