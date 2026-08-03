@@ -5,7 +5,7 @@ class App:
         print('\n--- Available Items ---')
         for k, v in Data.items.items():
             if v["quantity"] > 0 and v.get("is_active", True):
-                print(f"ID: {k} | {v['name']} - ₹{v['price']} (Stock: {v['quantity']})")
+                print(f"ID: {k} ]  {v['name']} - ₹{v['price']} (Stock: {v['quantity']})")
 
     def discountAmount(self, discount, fullTotal):
         discountValue = 0
@@ -33,13 +33,16 @@ class App:
         print('OrderId: ', orderId)
         print("-" * 50)
         fulltotal = 0
+        item_no=1
         for item in Data.orders[orderId]["cart"]:
             qnt = item['quantity']
             amount = item['price']
             name = Data.items[item['product_id']]["name"]
-            total = qnt * amount
-            print(f"{name} - ₹{amount} x {qnt} = ₹{total}")
-            fulltotal += total
+            for _ in range(qnt):
+                print(f"{item_no}  {name} -₹{amount}")
+                fulltotal+=amount
+                item_no+=1
+            
         
         print("-" * 50)
         print("Subtotal : ₹", fulltotal)
@@ -109,9 +112,21 @@ class App:
                 # Handle empty orders dict safely
                 orderID = max([int(k) for k in Data.orders.keys()], default=0) + 1
                 
-                if promoChoice == 'y':
-                    promotions = input("Enter Promo Code: ").strip().upper()
-                    Data.orders[orderID] = {"cart": cart, 'promotions': promotions}
+                if promoChoice in['y','yes']:
+                    user_promo = input("Enter Promo Code: ").strip().upper()
+                    cart_subtotal=sum(item['price']*item['quantity']for item in cart)
+                    if user_promo in Data.promotions:
+                        promo_data=Data.promotions[user_promo]
+                        min_req=promo_data.get('minimum_purchase',0)
+                        if cart_subtotal>=min_req:
+                            print(f"Promo Code'{user_promo}'applied successfully!")
+                            Data.orders[orderID] = {"cart": cart, 'promotions': user_promo}
+                        else:
+                            print(f"'{user_promo}'requires a minimum purchase of  ₹{min_req}.(your total is  ₹{cart_subtotal})")
+                            Data.orders[orderID]={'cart':cart}
+                    else:
+                        print(f"Invalid promo code:'{user_promo}'Does n ot exist.")   
+                        Data.orders[orderID] = {"cart": cart}
                 else:
                     Data.orders[orderID] = {"cart": cart}
                 return orderID

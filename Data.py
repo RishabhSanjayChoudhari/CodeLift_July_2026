@@ -8,28 +8,28 @@ class Unit(Enum):
 class Data:
     items = {
         1: {
-            "name": "milk",
-            "price": 100,
+            "name": "COW MILK",
+            "price": 50,
             "quantity": 50,
             "unit": Unit.LTR,
             "is_active": True,
         },
         2: {
-            "name": "sugar",
+            "name": "SUGAR",
             "price": 50,
             "quantity": 50,
             "unit": Unit.KG,
             "is_active": True,
         },
         3: {
-            "name": "Parle-G",
-            "price": 5,
+            "name": "PARLE-G",
+            "price": 10,
             "quantity": 1000,
             "unit": Unit.PIECES,
             "is_active": True,
         },
         4: {
-            "name": "KrackJack",
+            "name": "KRACKJACK",
             "price": 10,
             "quantity": 1000,
             "unit": Unit.PIECES,
