@@ -88,8 +88,7 @@ class App:
                     if not quantityAvailable:
                         cart.append({"product_id" :itemId,"quantity" : order_quantity,"price" :  productprice})
             
-            # choice = input("Do you want to add anything else (y/n): ").lower()
-            
+           
             while True:
                 choice = input("Do you want anything else? (y/n): ").lower()
                 if (choice == 'y'):
