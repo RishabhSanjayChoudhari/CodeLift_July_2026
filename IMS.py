@@ -104,6 +104,7 @@ class App:
                             promocode = self.applycoupon(cart)
                             if promocode:
                                 Data.orders[orderID] = { "cart" : cart, "promotions" : promocode}
+                                break
                             else:
                                 Data.orders[orderID] = { "cart" : cart}
                                 break
