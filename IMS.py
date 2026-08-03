@@ -106,8 +106,8 @@ class App:
                                 Data.orders[orderID] = { "cart" : cart, "promotions" : promocode}
                                 break
                             else:
-                                Data.orders[orderID] = { "cart" : cart}
-                                break
+                                print('invalid coupon code')
+                                continue
                         elif (promoChoice == 'n'):
                             Data.orders[orderID] = {"cart": cart}
                             break
