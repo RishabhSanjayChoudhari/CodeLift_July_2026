@@ -9,22 +9,22 @@ class Data:
     items = {
         1: {
             "name": "milk",
-            "price": 100,
-            "quantity": 50,
+            "price": 50,
+            "quantity": 500,
             "unit": Unit.LTR,
             "is_active": True,
         },
         2: {
             "name": "sugar",
-            "price": 50,
+            "price": 100,
             "quantity": 100,
             "unit": Unit.KG,
             "is_active": True,
         },
         3: {
             "name": "Parle-G",
-            "price": 5,
-            "quantity": 1000,
+            "price": 10,
+            "quantity": 100,
             "unit": Unit.PIECES,
             "is_active": True,
         },
@@ -34,22 +34,71 @@ class Data:
             "quantity": 1000,
             "unit": Unit.PIECES,
             "is_active": True
-        }
+        },
+
+        5: {
+            "name": "salt",
+            "price": 25,
+            "quantity": 100,
+            "unit": Unit.KG,
+            "is_active": True,
+        },
+
+        6: {
+            "name": "cooking oil",
+            "price": 150,
+            "quantity": 100,
+            "unit": Unit.LTR,
+            "is_active": True,
+        },
+
+        7: {
+            "name": "tea powder",
+            "price": 250,
+            "quantity": 80,
+            "unit": Unit.KG,
+            "is_active": True,
+        },
+
+        8: {
+            "name": "coffee",
+            "price": 450,
+            "quantity": 50,
+            "unit": Unit.KG,
+            "is_active": True,
+        },
+
+        9: {
+            "name": "Oats",
+            "price": 180,
+            "quantity": 100,
+            "unit": Unit.KG,
+            "is_active": True,
+        },
+
+        10: {
+            "name": "Coca-Cola",
+            "price": 35,
+            "quantity": 100,
+            "unit": Unit.LTR,
+            "is_active": True,
+        },
+
     }
 
     promotions = {
         "SUPER10": {
-            "discount_type": "percent_off",
+            "type": "percent",
             "minimum_purchase": 500,
             "maximum_purchase": 1000,
             "discount_value": 20,
             "is_active": True,
         },
         "10SUPER": {
-            "discount_type": "amount_off",
-            "minimum_purchase": 1000,
-            "maximum_purchase": 2000,
-            "discount_value": 100,
+            "type": "amount",
+            "minimum_purchase":500,
+            "maximum_purchase":1000,
+            "discount_value": 200,
             "is_active": True,
         },
     }
@@ -57,16 +106,18 @@ class Data:
     orders = {
         101: {
             "cart": [
-                {"product_id": 1, "quantity": 20, "price": 200},
+                {"product_id": 1, "quantity": 5, "price": 50},
                 {"product_id": 2, "quantity": 10, "price": 100},
-                {"product_id": 3, "quantity": 200, "price": 1000},
-            ]
+                {"product_id": 3, "quantity": 200, "price": 10},
+            ],
+            "promotions": "10SUPER"
         },
         102: {
             "cart": [
-                {"product_id": 1, "quantity": 20, "price": 200},
+                {"product_id": 1, "quantity": 20, "price": 50},
                 {"product_id": 2, "quantity": 10, "price": 100},
-                {"product_id": 3, "quantity": 200, "price": 1000},
-            ]
+                {"product_id": 4, "quantity": 150, "price": 10},
+            ],
+            "promotions": "SUPER10"
         }
     }
