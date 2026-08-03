@@ -1,65 +1,134 @@
 from Data import Data
-class App:
-    def printMenu():
-        print('Enter ItemId : ')
-        for k,v in Data.items.items():
-            if v["is_active"]==True and v["quantity"]>=1:
-                print(k,v["name"],v["price"])
-            
-    printMenu() 
-    print("-"*50)                                    
-    print("***********Inventory Management System***********")  
-    def printOrderRecipt(orderId):
-        print("="*50)
-        order=Data.orders[str(orderId)] 
-        itemList=order["cart"]
-        promo=order["promo_code"]
-        print(promo)
-        subtotal=0
-        for item in itemList:
-                productName=Data.items[item["product_id"]]["name"]
-                itemTotal=item["price"]*item["quantity"]
-                subtotal +=itemTotal
-                print(productName,'₹',item["price"],'x',item['quantity'],'=','₹',itemTotal)
-        print("-"*50)        
-        
-        print("TAX")
-        gst=subtotal*0.18
-        Ammount_with_gst=subtotal+gst
-        
-        print("Subtotal :",subtotal)
-        print("GST :(18%)",gst)
-        print("Amount with GST:",Ammount_with_gst)
-        print("-"*50)
-       
-        
-        print(promo,'Applied')
-        Discount=Ammount_with_gst*0.2
-        Ammount_after_discount=Ammount_with_gst-Discount
-        print("Discount=",Discount)
-        print("FinalAmount=",Ammount_after_discount)
-            
-     
 
-    print("-"*50)
-   #take order item id quanitity
-    def order():
-      cart =[]
-      while True:
-       product_id=input("Enter Product Id")
-       quantity=input("Enter quantity")
-       price=Data.items[int(product_id)]["price"]
-       cart.append({
-           "product_id":int(product_id),
-           "price":price,
-           "quantity":int(quantity)})
-       choice=input("Add Another item?(yes/no):")
-       if choice.lower()=="no":
-          break
-       Data.orders["103"]={ "cart": cart,
-                        "promo_code":"SUPER10"} 
-    
-    order()
-    print("-"*50)
-    printOrderRecipt("103")
-     
+class App:
+    def printMenu(self):
+        print('\n--- Available Items ---')
+        for k, v in Data.items.items():
+            if v["quantity"] > 0 and v.get("is_active", True):
+                print(f"ID: {k} | {v['name']} - ₹{v['price']} (Stock: {v['quantity']})")
+
+    def discountAmount(self, discount, fullTotal):
+        discountValue = 0
+        if discount['type'] == 'percent':
+            discountValue = fullTotal * (discount['discount_value'] / 100)
+            # Safe checking for max discount cap
+            max_cap = discount.get('maximum_purchase') or discount.get('max_discount')
+            if max_cap and discountValue > max_cap:
+                discountValue = max_cap
+        elif discount['type'] == 'amount':
+            discountValue = discount['discount_value']
+        return discountValue
+
+    def discountCalc(self, discount, fullTotal):
+        discountValue = 0
+        min_purchase = discount.get('minimum_purchase', 0)
+        if min_purchase <= fullTotal:
+            discountValue = self.discountAmount(discount, fullTotal)
+            if fullTotal < discountValue:
+                discountValue = fullTotal
+        return discountValue
+
+    def printOrderBill(self, orderId):
+        print("\n" + "=" * 50)
+        print('OrderId: ', orderId)
+        print("-" * 50)
+        fulltotal = 0
+        for item in Data.orders[orderId]["cart"]:
+            qnt = item['quantity']
+            amount = item['price']
+            name = Data.items[item['product_id']]["name"]
+            total = qnt * amount
+            print(f"{name} - ₹{amount} x {qnt} = ₹{total}")
+            fulltotal += total
+        
+        print("-" * 50)
+        print("Subtotal : ₹", fulltotal)
+
+        code = Data.orders[orderId].get("promotions", None)
+        if code and code in Data.promotions:
+            discount = Data.promotions[code]
+            discountValue = self.discountCalc(discount, fulltotal)
+            if discountValue > 0:
+                fulltotal -= discountValue
+                print(f"Coupon Applied ({code}) : -₹{discountValue}")
+                print(f"Total After Discount : ₹{fulltotal}")
+        elif code:
+            print("Invalid Promo Code Applied!")
+
+        gst = fulltotal * 0.18
+        print("-" * 50)
+        print(f"+GST (18%)           : ₹{gst:.2f}")
+        print(f"Total After Taxes    : ₹{fulltotal + gst:.2f}")
+        print("=" * 50)
+
+    def takeOrder(self):
+        cart = []
+        while True:
+            self.printMenu()
+            try:
+                itemId = int(input("\nEnter Product ID: "))
+            except ValueError:
+                print("Please enter a valid numeric ID.")
+                continue
+
+            if itemId not in Data.items:
+                print("Please enter a correct ID.")
+                continue
+
+            try:
+                order_quantity = int(input("Enter Quantity: "))
+            except ValueError:
+                print("Please enter a valid quantity.")
+                continue
+
+            available_qty = Data.items[itemId]["quantity"]
+            if available_qty < order_quantity:
+                print(f"Only {available_qty} items available.")
+            else:
+                productprice = Data.items[itemId]['price']
+                Data.items[itemId]["quantity"] -= order_quantity
+                
+                # Update cart
+                quantityAvailable = False
+                for product in cart:
+                    if product['product_id'] == itemId:
+                        product['quantity'] += order_quantity
+                        quantityAvailable = True
+                        break
+                if not quantityAvailable:
+                    cart.append({"product_id": itemId, "quantity": order_quantity, "price": productprice})
+
+            choice = input("Do you want to add anything else (y/n): ").lower()
+            if choice == "n":
+                if not cart:
+                    print("Cart is empty! Cannot create order.")
+                    return None
+
+                promoChoice = input("Do you want to add PROMO (y/n): ").lower()
+                
+                # Handle empty orders dict safely
+                orderID = max([int(k) for k in Data.orders.keys()], default=0) + 1
+                
+                if promoChoice == 'y':
+                    promotions = input("Enter Promo Code: ").strip().upper()
+                    Data.orders[orderID] = {"cart": cart, 'promotions': promotions}
+                else:
+                    Data.orders[orderID] = {"cart": cart}
+                return orderID
+
+    def start(self):
+        while True:
+            orderId = self.takeOrder()
+            if orderId:
+                self.printOrderBill(orderId)
+            
+            cont = input("\nDo you want to take another order? (y/n): ").lower()
+            if cont != 'y':
+                print("Thank you! Exiting system.")
+                break
+def main():
+    app = App()
+    app.start()
+
+if __name__ == "__main__":
+    main()
