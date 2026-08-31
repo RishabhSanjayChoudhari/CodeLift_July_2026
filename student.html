@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+</head>
+
+<body>
+
+<div class="container py-5">
+
+    <div class="card shadow-lg">
+
+        <div class="card-header bg-primary text-white">
+            <h4>CodeLift - Student Manager</h4>
+        </div>
+
+        <div class="card-body">
+
+            <!-- Add Student -->
+            <div class="row g-3 mb-4">
+
+                <div class="col-md-5">
+                    <input type="text"
+                           id="studentName"
+                           class="form-control"
+                           placeholder="Student Name">
+                </div>
+
+                <div class="col-md-5">
+                    <input type="text"
+                           id="studentCourse"
+                           class="form-control"
+                           placeholder="Course">
+                </div>
+
+                <div class="col-md-2">
+                    <button id="addBtn"
+                            class="btn btn-success btn-sm h-100">
+                        Add Student
+                    </button>
+                </div>
+
+            </div>
+
+
+            <!-- Student List -->
+            <div>
+
+                <h5 class="mb-3">Student List</h5>
+
+                <table id="studentTable"
+                       class="table table-bordered table-hover text-center">
+
+                    <thead class="table-dark">
+
+                        <tr>
+                            <th>Name</th>
+                            <th>Course</th>
+                            <th>Action</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        <tr>
+                            <td>Milan</td>
+                            <td>Fullstack</td>
+                            <td>
+                                <button class="btn btn-sm btn-danger delete-btn">
+                                    <i class="bi bi-trash3"></i>
+                                </button>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>Abhishek</td>
+                            <td>Data Analytics</td>
+                            <td>
+                                <button class="btn btn-sm btn-danger delete-btn">
+                                    <i class="bi bi-trash3"></i>
+                                </button>
+                            </td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+    // --------------------------------
+    // Add Student
+    // --------------------------------
+
+    $("#addBtn").click(function () {
+
+        let name = $("#studentName").val().trim();
+        let course = $("#studentCourse").val().trim();
+
+        if (name === "" || course === "") {
+            alert("Please fill both fields");
+            return;
+        }
+
+        let newRow = `
+            <tr>
+                <td>${name}</td>
+                <td>${course}</td>
+                <td>
+                    <button class="btn btn-sm btn-danger delete-btn">
+                        <i class="bi bi-trash3"></i>
+                    </button>
+                </td>
+            </tr>
+        `;
+
+        $("#studentTable tbody").append(newRow);
+
+        $("#studentName").val("");
+        $("#studentCourse").val("");
+
+    });
+
+
+    // --------------------------------
+    // Delete Student
+    // --------------------------------
+
+    $(document).on("click", ".delete-btn", function () {
+
+        let row = $(this).closest("tr");
+
+        let studentName = row.find("td:first").text();
+
+        let confirmation = confirm(
+            "Are you sure you want to delete student: " + studentName + "?"
+        );
+
+        if (confirmation) {
+
+            row.remove();
+
+            alert("Student deleted successfully.");
+
+        }
+
+    });
+
+</script>
+
+</body>
+</html>
